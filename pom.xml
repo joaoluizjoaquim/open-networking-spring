@@ -69,5 +69,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<distributionManagement>
+    		<repository>
+      			<id>Releases</id>
+      			<name>Corporate Repository</name>
+      			<url>http://localhost:8089/nexus/content/repositories/joaoluizjoaquim-releases/</url>
+    		</repository>
+    		<snapshotRepository>
+      			<id>Snapshots</id>
+      			<url>http://localhost:8089/nexus/content/repositories/joaoluizjoaquim-snapshots/</url>
+    		</snapshotRepository>
+  </distributionManagement>
 
 </project>
