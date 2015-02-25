@@ -8,6 +8,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<nexus.server.ip>192.168.50.9</nexus.server.ip>
+		<nexus.server.port>8089</nexus.server.ip>
 	</properties>
 
 	<dependencyManagement>
@@ -74,11 +76,11 @@
     		<repository>
       			<id>Releases</id>
       			<name>Corporate Repository</name>
-      			<url>http://192.168.50.9:8089/nexus/content/repositories/releases/</url>
+      			<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/releases/</url>
     		</repository>
     		<snapshotRepository>
       			<id>Snapshots</id>
-      			<url>http://192.168.50.9:8089/nexus/content/repositories/snapshots/</url>
+      			<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/snapshots/</url>
     		</snapshotRepository>
   	</distributionManagement>
 
