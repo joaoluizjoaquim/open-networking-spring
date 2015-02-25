@@ -9,7 +9,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<nexus.server.ip>192.168.50.9</nexus.server.ip>
-		<nexus.server.port>8089</nexus.server.ip>
+		<nexus.server.port>8089</nexus.server.port>
 	</properties>
 
 	<dependencyManagement>
