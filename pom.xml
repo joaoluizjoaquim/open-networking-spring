@@ -74,11 +74,11 @@
     		<repository>
       			<id>Releases</id>
       			<name>Corporate Repository</name>
-      			<url>http://192.168.50.9:8089/nexus/content/repositories/joaoluizjoaquim-releases/</url>
+      			<url>http://192.168.50.9:8089/nexus/content/repositories/releases/</url>
     		</repository>
     		<snapshotRepository>
       			<id>Snapshots</id>
-      			<url>http://192.168.50.9:8089/nexus/content/repositories/joaoluizjoaquim-snapshots/</url>
+      			<url>http://192.168.50.9:8089/nexus/content/repositories/snapshots/</url>
     		</snapshotRepository>
   	</distributionManagement>
 
