@@ -10,14 +10,69 @@
 		<java.version>1.8</java.version>
 		<nexus.server.ip>192.168.50.9</nexus.server.ip>
 		<nexus.server.port>8089</nexus.server.port>
+		<spring.boot.version>1.2.1.RELEASE</spring.boot.version>
 	</properties>
+
+	<scm>
+		<developerConnection>
+			scm:git:https://github.com/joaoluizjoaquim/open-networking-spring.git
+		</developerConnection>
+	</scm>
+
+	<distributionManagement>
+			<repository>
+					<id>Releases</id>
+					<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/releases/</url>
+			</repository>
+			<snapshotRepository>
+					<id>Snapshots</id>
+					<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/snapshots/</url>
+			</snapshotRepository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>versions-maven-plugin</artifactId>
+            <version>2.1</version>
+        </plugin>
+        <plugin>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.9.2</version>
+            <configuration>
+                <tag>${project.artifactId}-${project.version}</tag>
+            </configuration>
+        </plugin>
+		</plugins>
+	</build>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.2.1.RELEASE</version>
+				<version>${spring.boot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -47,41 +102,5 @@
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.2</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	
-	<distributionManagement>
-    		<repository>
-      			<id>Releases</id>
-      			<name>Corporate Repository</name>
-      			<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/releases/</url>
-    		</repository>
-    		<snapshotRepository>
-      			<id>Snapshots</id>
-      			<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/snapshots/</url>
-    		</snapshotRepository>
-  	</distributionManagement>
 
 </project>
