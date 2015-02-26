@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.joaojoaquim</groupId>
 	<artifactId>open-networking-spring</artifactId>
@@ -20,14 +19,14 @@
 	</scm>
 
 	<distributionManagement>
-			<repository>
-					<id>Releases</id>
-					<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/releases/</url>
-			</repository>
-			<snapshotRepository>
-					<id>Snapshots</id>
-					<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/snapshots/</url>
-			</snapshotRepository>
+		<repository>
+			<id>Releases</id>
+			<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>Snapshots</id>
+			<url>http://${nexus.server.ip}:${nexus.server.port}/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<build>
@@ -53,17 +52,15 @@
 				</configuration>
 			</plugin>
 			<plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>versions-maven-plugin</artifactId>
-            <version>2.1</version>
-        </plugin>
-        <plugin>
-            <artifactId>maven-scm-plugin</artifactId>
-            <version>1.9.2</version>
-            <configuration>
-                <tag>${project.artifactId}-${project.version}</tag>
-            </configuration>
-        </plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.1</version>
+			</plugin>
 		</plugins>
 	</build>
 
