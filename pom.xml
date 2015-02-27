@@ -16,8 +16,8 @@
 		<developerConnection>
 			scm:git:https://github.com/joaoluizjoaquim/open-networking-spring.git
 		</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<distributionManagement>
 		<repository>
@@ -64,7 +64,7 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
