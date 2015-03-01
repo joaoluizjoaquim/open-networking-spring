@@ -15,7 +15,7 @@
 
 	<scm>
 		<developerConnection>
-			scm:git:ssh://git@github.com:joaoluizjoaquim/open-networking-spring.git
+			scm:git:git@github.com:joaoluizjoaquim/open-networking-spring.git
 		</developerConnection>
 	</scm>
 
