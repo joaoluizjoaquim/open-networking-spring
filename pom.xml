@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.joaojoaquim</groupId>
 	<artifactId>open-networking-spring</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,7 +16,6 @@
 		<developerConnection>
 			scm:git:git@github.com:joaoluizjoaquim/open-networking-spring.git
 		</developerConnection>
-	  <tag>open-networking-spring-0.0.1</tag>
   </scm>
 
 	<distributionManagement>
