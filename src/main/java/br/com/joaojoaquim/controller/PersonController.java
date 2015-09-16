@@ -17,7 +17,7 @@ import br.com.joaojoaquim.repository.EventRepository;
 import br.com.joaojoaquim.repository.PersonRepository;
 
 @RestController
-@RequestMapping("/people")
+@RequestMapping("/participants")
 public class PersonController {
 
 	@Autowired

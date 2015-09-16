@@ -3,6 +3,7 @@ package br.com.joaojoaquim;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -82,34 +83,33 @@ public class EventTest {
 	public void testWebServiceOK(){
 		ResponseEntity<Map> entity = template.getForEntity(pathTestUrl, Map.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
-		//assertEquals(1, entity.getBody().get("name"));
 	}
 	
 	@Test
 	public void shouldRegisterParticipantInEvent(){
-		ResponseEntity<Map> entity = template.postForEntity("http://localhost:" + this.port +"/people/"+personCreated.getId()+"/checkin/"+eventCreated.getId(),null, Map.class);
+		ResponseEntity<Map> entity = template.postForEntity(new LinkBuilder().participant().id(personCreated.getId()).checkin().id(eventCreated.getId()).build(),null, Map.class);
 		assertEquals(HttpStatus.ACCEPTED, entity.getStatusCode());
 	}
 	
 	@Test
 	public void shouldNotCheckinEventParticipantChecked(){
-		ResponseEntity<Map> entity = template.postForEntity("http://localhost:" + this.port +"/people/"+personCreated.getId()+"/checkin/"+eventCreated.getId(),null, Map.class);
+		ResponseEntity<Map> entity = template.postForEntity(new LinkBuilder().participant().id(personCreated.getId()).checkin().id(eventCreated.getId()).build(),null, Map.class);
 		assertEquals(HttpStatus.ACCEPTED, entity.getStatusCode());
-		ResponseEntity<Map> entity2 = template.postForEntity("http://localhost:" + this.port +"/people/"+personCreated.getId()+"/checkin/"+eventCreated.getId(),null, Map.class);
+		ResponseEntity<Map> entity2 = template.postForEntity(new LinkBuilder().participant().id(personCreated.getId()).checkin().id(eventCreated.getId()).build(),null, Map.class);
 		assertEquals(HttpStatus.NOT_ACCEPTABLE, entity2.getStatusCode());
 	}
 	
 	@Test
 	public void shouldNotCheckoutEventPartipantNotChecked(){
-		ResponseEntity<Map> entity2 = template.postForEntity("http://localhost:" + this.port +"/people/"+personCreated.getId()+"/checkout/"+eventCreated.getId(),null, Map.class);
+		ResponseEntity<Map> entity2 = template.postForEntity(new LinkBuilder().participant().id(personCreated.getId()).checkout().id(eventCreated.getId()).build(),null, Map.class);
 		assertEquals(HttpStatus.NOT_ACCEPTABLE, entity2.getStatusCode());		
 	}
 	
 	@Test
 	public void shouldCheckoutParticipantEvent(){
-		ResponseEntity<Map> entity = template.postForEntity("http://localhost:" + this.port +"/people/"+personCreated.getId()+"/checkin/"+eventCreated.getId(),null, Map.class);
+		ResponseEntity<Map> entity = template.postForEntity(new LinkBuilder().participant().id(personCreated.getId()).checkin().id(eventCreated.getId()).build(),null, Map.class);
 		assertEquals(HttpStatus.ACCEPTED, entity.getStatusCode());
-		entity = template.postForEntity("http://localhost:" + this.port +"/people/"+personCreated.getId()+"/checkout/"+eventCreated.getId(),null, Map.class);
+		entity = template.postForEntity(new LinkBuilder().participant().id(personCreated.getId()).checkout().id(eventCreated.getId()).build(),null, Map.class);
 		assertEquals(HttpStatus.ACCEPTED, entity.getStatusCode());
 	}
 		
@@ -117,6 +117,39 @@ public class EventTest {
 	public void after(){
 		eventRepository.deleteAll();
 		personRepository.deleteAll();
+	}
+	
+	private class LinkBuilder{
+		private StringBuilder link;
+		
+		public LinkBuilder() {
+			link = new StringBuilder("http://localhost:").append(port);
+		}
+		
+		public String build() {
+			return link.toString();
+		}
+
+		public LinkBuilder participant(){
+			link.append("/participants");
+			return this;
+		}
+		
+		public LinkBuilder id(Long id){
+			link.append("/").append(id);
+			return this;
+		}
+		
+		public LinkBuilder checkin(){
+			link.append("/checkin");
+			return this;
+		}
+		
+		public LinkBuilder checkout(){
+			link.append("/checkout");
+			return this;
+		}
+		
 	}
 	
 }
