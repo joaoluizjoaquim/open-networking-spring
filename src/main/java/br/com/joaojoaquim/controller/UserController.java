@@ -5,7 +5,6 @@ import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,40 +26,44 @@ public class UserController {
 	private EventRepository eventRepository;
 	
 	@Autowired
-	private GraphDatabaseService graph;
+	private GraphDatabaseService graphDatabase;
 	
-	@RequestMapping(method=RequestMethod.POST, value="{personId}/checkin/{eventId}")
-	@Transactional
-	public ResponseEntity<User> checkin(@PathVariable("personId") Long personId,
-			@PathVariable("eventId") Long eventId){
-		try(Transaction tx = graph.beginTx()){
-			User person = repository.findOne(personId);
-			Event event = eventRepository.findOne(eventId);
-			if(!person.getEvents().add(event)){
-				return new ResponseEntity<User>(person, HttpStatus.NOT_ACCEPTABLE);
-			};
-			repository.save(person);
-			tx.success();
-			return new ResponseEntity<User>(person, HttpStatus.ACCEPTED);
-		}catch(IllegalArgumentException exception){
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<User> create(User user){
+		try(Transaction tx = graphDatabase.beginTx()){
+			repository.save(user);
+			return new ResponseEntity<User>(user, HttpStatus.CREATED);
+		}catch(RuntimeException exception){
 			return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 	
-	@RequestMapping(method=RequestMethod.POST, value="{personId}/checkout/{eventId}")
-	@Transactional
-	public ResponseEntity<User> checkout(@PathVariable("personId") Long personId,
+	@RequestMapping(method=RequestMethod.POST, value="{userId}/checkin/{eventId}")
+	public ResponseEntity<User> checkin(@PathVariable("userId") Long userId,
 			@PathVariable("eventId") Long eventId){
-		try(Transaction tx = graph.beginTx()){
-			User person = repository.findOne(personId);
+		try(Transaction tx = graphDatabase.beginTx()){
+			User user = repository.findOne(userId);
 			Event event = eventRepository.findOne(eventId);
-			if(!person.getEvents().remove(event)){
-				return new ResponseEntity<User>(person, HttpStatus.NOT_ACCEPTABLE);
-			};
-			repository.save(person);
+			user.checkin(event);
+			repository.save(user);
 			tx.success();
-			return new ResponseEntity<User>(person, HttpStatus.ACCEPTED);
-		}catch(IllegalArgumentException exception){
+			return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+		}catch(RuntimeException exception){
+			return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+		}
+	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="{userId}/checkout/{eventId}")
+	public ResponseEntity<User> checkout(@PathVariable("userId") Long userId,
+			@PathVariable("eventId") Long eventId){
+		try(Transaction tx = graphDatabase.beginTx()){
+			User user = repository.findOne(userId);
+			Event event = eventRepository.findOne(eventId);
+			user.checkout(event);
+			repository.save(user);
+			tx.success();
+			return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+		}catch(RuntimeException exception){
 			return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
 		}
 	}

@@ -61,9 +61,21 @@ public class UserTest {
 		event.setTag("javaone2015");
 		eventCreated = eventRepository.save(event);
 		
-		User person = new User();
-		person.setName("John");
+		User person = new User("John");
 		personCreated = personRepository.save(person);
+	}
+	
+	@After
+	public void after(){
+		eventRepository.deleteAll();
+		personRepository.deleteAll();
+	}
+	
+	@Test
+	public void shouldCreateNewUser(){
+		String link = new LinkBuilder().user().build();
+		User user = new User("Test user");
+		assertEquals(HttpStatus.CREATED, template.postForEntity(link, user, Map.class).getStatusCode());
 	}
 	
 	@Test
@@ -96,12 +108,6 @@ public class UserTest {
 		String linkCheckout = new LinkBuilder().user().id(personCreated.getId()).checkout().id(eventCreated.getId()).build();
 		assertEquals(HttpStatus.ACCEPTED, template.postForEntity(linkCheckout,null, Map.class).getStatusCode());
 	}
-		
-	@After
-	public void after(){
-		eventRepository.deleteAll();
-		personRepository.deleteAll();
-	}
 	
 	private class LinkBuilder{
 		private StringBuilder link;
@@ -119,11 +125,11 @@ public class UserTest {
 			return this;
 		}
 		
-		public LinkBuilder id(Long id){
+		public LinkBuilder id(Object id){
 			link.append("/").append(id);
 			return this;
 		}
-		
+				
 		public LinkBuilder checkin(){
 			link.append("/checkin");
 			return this;
