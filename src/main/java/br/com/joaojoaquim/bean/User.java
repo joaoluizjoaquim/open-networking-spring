@@ -1,25 +1,20 @@
 package br.com.joaojoaquim.bean;
 
-import org.neo4j.graphdb.Direction;
+import java.util.Set;
+
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedTo;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @NodeEntity
-public class Event {
+public class User {
 
 	@GraphId
 	private Long id;
 	
-	private String name;	
-	private String tag;
+	private String name;
 	
-	@JsonIgnore
-	@RelatedTo(type="PARTICIPANTS", direction=Direction.BOTH)
-	private Iterable<User> participants;
-	
+	private Set<Event> events;
+
 	public Long getId() {
 		return id;
 	}
@@ -36,20 +31,12 @@ public class Event {
 		this.name = name;
 	}
 
-	public String getTag() {
-		return tag;
+	public Set<Event> getEvents() {
+		return events;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-	
-	public Iterable<User> getParticipants() {
-		return participants;
-	}
-	
-	public void setParticipants(Iterable<User> participants) {
-		this.participants = participants;
+	public void setEvents(Set<Event> events) {
+		this.events = events;
 	}
 
 	@Override
@@ -68,7 +55,7 @@ public class Event {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Event other = (Event) obj;
+		User other = (User) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -77,6 +64,6 @@ public class Event {
 		return true;
 	}
 	
-		
+	
 	
 }
