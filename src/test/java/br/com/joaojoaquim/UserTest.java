@@ -49,7 +49,6 @@ public class UserTest {
 	
 	@BeforeClass
 	public static void beforeClass(){
-		
 		template = new TestRestTemplate();
         template.setMessageConverters(Arrays.<HttpMessageConverter<?>>asList(new MappingJackson2HttpMessageConverter()));
 	}
@@ -73,21 +72,21 @@ public class UserTest {
 	
 	@Test
 	public void shouldCreateNewUser(){
-		String link = new LinkBuilder().user().build();
+		String link = new LinkBuilder(port).user().build();
 		User user = new User("Test user");
 		assertEquals(HttpStatus.CREATED, template.postForEntity(link, user, Map.class).getStatusCode());
 	}
 	
 	@Test
 	public void shouldRegisterParticipantInEvent(){
-		String link = new LinkBuilder().user().id(personCreated.getId()).checkin().id(eventCreated.getId()).build();
+		String link = new LinkBuilder(port).user().id(personCreated.getId()).checkin().id(eventCreated.getId()).build();
 		
 		assertEquals(HttpStatus.ACCEPTED, template.postForEntity(link,null, Map.class).getStatusCode());
 	}
 	
 	@Test
 	public void shouldNotCheckinEventParticipantChecked(){
-		String link = new LinkBuilder().user().id(personCreated.getId()).checkin().id(eventCreated.getId()).build();
+		String link = new LinkBuilder(port).user().id(personCreated.getId()).checkin().id(eventCreated.getId()).build();
 		
 		assertEquals(HttpStatus.ACCEPTED, template.postForEntity(link,null, Map.class).getStatusCode());
 		
@@ -96,50 +95,17 @@ public class UserTest {
 	
 	@Test
 	public void shouldNotCheckoutEventPartipantNotChecked(){
-		String link = new LinkBuilder().user().id(personCreated.getId()).checkout().id(eventCreated.getId()).build();
+		String link = new LinkBuilder(port).user().id(personCreated.getId()).checkout().id(eventCreated.getId()).build();
 		assertEquals(HttpStatus.NOT_ACCEPTABLE, template.postForEntity(link,null, Map.class).getStatusCode());		
 	}
 	
 	@Test
 	public void shouldCheckoutParticipantEvent(){
-		String linkCheckin = new LinkBuilder().user().id(personCreated.getId()).checkin().id(eventCreated.getId()).build();
+		String linkCheckin = new LinkBuilder(port).user().id(personCreated.getId()).checkin().id(eventCreated.getId()).build();
 		assertEquals(HttpStatus.ACCEPTED, template.postForEntity(linkCheckin,null, Map.class).getStatusCode());
 		
-		String linkCheckout = new LinkBuilder().user().id(personCreated.getId()).checkout().id(eventCreated.getId()).build();
+		String linkCheckout = new LinkBuilder(port).user().id(personCreated.getId()).checkout().id(eventCreated.getId()).build();
 		assertEquals(HttpStatus.ACCEPTED, template.postForEntity(linkCheckout,null, Map.class).getStatusCode());
-	}
-	
-	private class LinkBuilder{
-		private StringBuilder link;
-		
-		public LinkBuilder() {
-			link = new StringBuilder("http://localhost:").append(port);
-		}
-		
-		public String build() {
-			return link.toString();
-		}
-
-		public LinkBuilder user(){
-			link.append("/users");
-			return this;
-		}
-		
-		public LinkBuilder id(Object id){
-			link.append("/").append(id);
-			return this;
-		}
-				
-		public LinkBuilder checkin(){
-			link.append("/checkin");
-			return this;
-		}
-		
-		public LinkBuilder checkout(){
-			link.append("/checkout");
-			return this;
-		}
-		
 	}
 	
 }
